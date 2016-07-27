@@ -17,6 +17,8 @@
 
 @property (nonatomic, strong) NSArray *dataSource;
 
+@property (nonatomic, strong) NSURL *appStoreLink;
+
 @end
 
 @implementation DataViewController
@@ -25,20 +27,11 @@ static NSString * const dataCellId = @"dataCellId";
 
 static NSString * const itemCellId = @"itemCellId";
 
-static NSString * const kSwiftMarker = @" Swift ";
+static NSString * const kAppStoreMarker = @" App Store ";
 
-/*
-- (instancetype)initWithData:(Data *)data;
-{
-    self = [super init];
-    if (!self)
-        return nil;
-    
-    self.data = data;
-    
-    return self;
-}
-*/
+static NSString * const kCodeMarker = @"`";
+
+static NSString * const kSwiftMarker = @" Swift ";
 
 - (void)viewDidLoad;
 {
@@ -96,6 +89,91 @@ static NSString * const kSwiftMarker = @" Swift ";
     self.tableView.delegate = self;
 }
 
+#pragma mark Private
+
+- (NSAttributedString *)attributedStringForItem:(NSDictionary *)item;
+{
+    NSString *title = item[@"title"];
+    
+    NSString *description = item[@"description"];
+    description = [description stringByReplacingOccurrencesOfString:kCodeMarker withString:@""];
+    
+    NSString *subtitle = description;
+    
+    NSArray *tags = item[@"tags"];
+    
+    BOOL isSwift = [tags containsObject:@"swift"];
+    BOOL inAppStore = [item.allKeys containsObject:@"itunes"];
+    
+    BOOL condition = isSwift || inAppStore;
+    if (condition) {
+        if (description)
+            description = [description stringByAppendingString:@"\n"];
+        else
+            description = @"";
+    }
+    
+    if (isSwift) {
+        NSString *swift = [NSString stringWithFormat:@" %@", kSwiftMarker];
+        description = [description stringByAppendingString:swift];
+    }
+    
+    if (inAppStore) {
+        NSString *addition = [NSString stringWithFormat:@" %@", kAppStoreMarker];
+        description = [description stringByAppendingString:addition];
+    }
+    
+    NSString *text = title;
+    if (description)
+        text = [title stringByAppendingFormat:@"\n%@", description];
+    
+    NSMutableAttributedString *attributed = [[NSMutableAttributedString alloc] initWithString:text];
+    
+    {
+        UIColor *color = self.swiftColor;
+        NSDictionary *attributes = @{
+                                     NSBackgroundColorAttributeName:color,
+                                     NSForegroundColorAttributeName:[UIColor whiteColor]
+                                     };
+        NSRange range = [text rangeOfString:kSwiftMarker];
+        [attributed addAttributes:attributes range:range];
+    }
+    
+    {
+        UIColor *color = [UIColor lightGrayColor];
+        NSDictionary *attributes = @{
+                                     NSBackgroundColorAttributeName:color,
+                                     NSForegroundColorAttributeName:[UIColor whiteColor]
+                                     };
+        
+        NSRange range = [text rangeOfString:kAppStoreMarker];
+        [attributed addAttributes:attributes range:range];
+    }
+    
+    if (description)
+    {
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.lineSpacing = 5;
+        NSDictionary *attributes = @{
+                                     NSParagraphStyleAttributeName:style,
+                                     NSFontAttributeName:[UIFont systemFontOfSize:12]
+                                     };
+        NSRange range = [text rangeOfString:description];
+        [attributed addAttributes:attributes range:range];
+    }
+    
+    if (subtitle)
+    {
+        NSDictionary *attributes = @{
+                                     NSForegroundColorAttributeName:[UIColor grayColor]
+                                     };
+        NSRange range = [text rangeOfString:subtitle];
+        [attributed addAttributes:attributes range:range];
+    }
+    
+    return attributed;
+}
+
 - (UIColor *)swiftColor;
 {
     UIColor *swiftColor = [UIColor colorWithRed:230/255.f green:78/255.f blue:54/255.f alpha:1];
@@ -103,6 +181,30 @@ static NSString * const kSwiftMarker = @" Swift ";
 }
 
 #pragma mark Table view
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    id item = self.dataSource[indexPath.row];
+    
+    return  [item isKindOfClass:[NSDictionary class]] ?
+    ({
+        
+        
+        CGSize size = self.view.bounds.size;
+        size.width -= (20 * 2);
+        
+        NSAttributedString *attributed = [self attributedStringForItem:item];
+        
+        CGRect rect = [attributed boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+        
+        CGFloat subtitle = rect.size.height;
+        
+        CGFloat pad = 15;
+        CGFloat total = subtitle + pad * 2;
+        total;
+    }):
+    50;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
@@ -115,37 +217,12 @@ static NSString * const kSwiftMarker = @" Swift ";
     
     if ([item isKindOfClass:[NSDictionary class]]) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:itemCellId];
-        if (!cell)
+        if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:itemCellId];
+            cell.textLabel.numberOfLines = 0;
+        }
         
-        cell.textLabel.text = ({
-            NSString *title = item[@"title"];
-            title;
-        });
-        
-        cell.detailTextLabel.attributedText = ({
-            NSString *description = item[@"description"];
-            NSArray *tags = item[@"tags"];
-            if ([tags containsObject:@"swift"]) {
-                NSString *swift = [NSString stringWithFormat:@" %@", kSwiftMarker];
-                description = [description stringByAppendingString:swift];
-            }
-            
-            NSMutableAttributedString *attributed = description?
-            [[NSMutableAttributedString alloc] initWithString:description]:
-            nil;
-            
-            if (attributed) {
-                UIColor *swiftColor = self.swiftColor;
-                NSDictionary *attributes = @{
-                                             NSBackgroundColorAttributeName:swiftColor,
-                                             NSForegroundColorAttributeName:[UIColor whiteColor]};
-                NSRange range = [description rangeOfString:kSwiftMarker];
-                [attributed addAttributes:attributes range:range];
-            }
-            
-            attributed;
-        });
+        cell.textLabel.attributedText = [self attributedStringForItem:item];
         
         return cell;
     }
@@ -172,13 +249,27 @@ static NSString * const kSwiftMarker = @" Swift ";
     id item = self.dataSource[indexPath.row];
     
     if ([item isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *app = (NSDictionary *)item;
+        
+        
+        NSString *key = @"itunes";
+        if ([app.allKeys containsObject:key]) {
+            NSString *appStoreLink = app[@"itunes"];
+            self.appStoreLink = [NSURL URLWithString:appStoreLink];
+        }
+        else
+            self.appStoreLink = nil;
+        
         NSString *source = item[@"source"];
         NSURL *url = [NSURL URLWithString:source];
         
-        SFSafariViewController *safariController = [[SFSafariViewController alloc] initWithURL:url];
-        safariController.title = item[@"title"];
-
-        [self.navigationController pushViewController:safariController animated:YES];
+        SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+        safariViewController.title = item[@"title"];
+        
+        if (self.appStoreLink)
+            safariViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"App Store" style:UIBarButtonItemStylePlain target:self action:@selector(openAppStoreLink)];
+        
+        [self.navigationController pushViewController:safariViewController animated:YES];
         return;
     }
     
@@ -186,6 +277,11 @@ static NSString * const kSwiftMarker = @" Swift ";
     DataViewController *controller = [[DataViewController alloc] init];
     controller.data = item;
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)openAppStoreLink;
+{
+    [[UIApplication sharedApplication] openURL:self.appStoreLink];
 }
 
 @end
