@@ -142,7 +142,7 @@ static NSString * const kArchive = @"archive";
         NSArray *tags = obj[@"tags"];
         
         // normalize category array
-        id category = obj[@"category"];
+        id category = obj[@"category-ids"];
         if ([category isKindOfClass:[NSString class]])
             category = @[category];
         NSArray *normalized = category;
