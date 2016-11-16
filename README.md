@@ -2,7 +2,7 @@
 
 Super basic iOS app to browse [`open-source-ios-apps`](https://github.com/dkhamsing/open-source-ios-apps) :octocat:
 
-![](Assets/0.2.png)
+![](Assets/0.3.png)
 
 ## Getting Started
 

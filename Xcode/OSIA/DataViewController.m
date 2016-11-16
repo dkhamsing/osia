@@ -8,8 +8,12 @@
 
 #import "DataViewController.h"
 
+// Models
 #import "Data.h"
+
+// Misc
 @import SafariServices;
+#import "ScreenshotsController.h"
 
 @interface DataViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -42,10 +46,10 @@ static NSString * const kSwiftMarker = @" Swift ";
 - (void)setData:(Data *)data;
 {
     _data = data;
-    [self reload];
+    [self render];
 }
 
-- (void)reload;
+- (void)render;
 {
     self.title = self.data.name;
     
@@ -247,11 +251,9 @@ static NSString * const kSwiftMarker = @" Swift ";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     id item = self.dataSource[indexPath.row];
-    
     if ([item isKindOfClass:[NSDictionary class]]) {
         NSDictionary *app = (NSDictionary *)item;
-        
-        
+
         NSString *key = @"itunes";
         if ([app.allKeys containsObject:key]) {
             NSString *appStoreLink = app[@"itunes"];
@@ -262,6 +264,17 @@ static NSString * const kSwiftMarker = @" Swift ";
         
         NSString *source = item[@"source"];
         NSURL *url = [NSURL URLWithString:source];
+        
+        NSString *screenshotsKey = @"screenshots";
+        BOOL hasScreenshots = [app.allKeys containsObject:screenshotsKey];
+        if (hasScreenshots) {
+            ScreenshotsController *controller = [[ScreenshotsController alloc] init];
+            controller.screenshots = app[screenshotsKey];
+            controller.sourceUrl   = url;
+            controller.appStoreUrl = self.appStoreLink;            
+            [self.navigationController pushViewController:controller animated:YES];
+            return;
+        }
         
         SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
         safariViewController.title = item[@"title"];

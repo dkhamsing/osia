@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D62ED4AE1DDCBFB100D2CF42 /* ScreenshotsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D62ED4AD1DDCBFB100D2CF42 /* ScreenshotsController.m */; };
 		D65589C31D42A3620033DD9D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D65589C21D42A3620033DD9D /* main.m */; };
 		D65589C61D42A3620033DD9D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D65589C51D42A3620033DD9D /* AppDelegate.m */; };
 		D65589CE1D42A3620033DD9D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D65589CD1D42A3620033DD9D /* Assets.xcassets */; };
@@ -37,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D62ED4AC1DDCBFB100D2CF42 /* ScreenshotsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenshotsController.h; sourceTree = "<group>"; };
+		D62ED4AD1DDCBFB100D2CF42 /* ScreenshotsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenshotsController.m; sourceTree = "<group>"; };
 		D65589BE1D42A3620033DD9D /* OSIA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OSIA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D65589C21D42A3620033DD9D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D65589C41D42A3620033DD9D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -119,6 +122,8 @@
 				D65589CF1D42A3620033DD9D /* LaunchScreen.storyboard */,
 				D65AC84D1D466E55009A9AD4 /* Parser.h */,
 				D65AC84E1D466E55009A9AD4 /* Parser.m */,
+				D62ED4AC1DDCBFB100D2CF42 /* ScreenshotsController.h */,
+				D62ED4AD1DDCBFB100D2CF42 /* ScreenshotsController.m */,
 				D65589C11D42A3620033DD9D /* Supporting Files */,
 			);
 			path = OSIA;
@@ -281,6 +286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D65589C61D42A3620033DD9D /* AppDelegate.m in Sources */,
+				D62ED4AE1DDCBFB100D2CF42 /* ScreenshotsController.m in Sources */,
 				D65589C31D42A3620033DD9D /* main.m in Sources */,
 				D65AC8461D42C857009A9AD4 /* Data.m in Sources */,
 				D65AC84F1D466E55009A9AD4 /* Parser.m in Sources */,
