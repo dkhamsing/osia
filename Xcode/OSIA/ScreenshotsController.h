@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+/* Displays screenshots */
 @interface ScreenshotsController : UIViewController
 
 @property (nonatomic, strong) NSArray *screenshots;
