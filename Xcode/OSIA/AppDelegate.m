@@ -8,10 +8,11 @@
 
 #import "AppDelegate.h"
 
-#import "DataViewController.h"
-#import "Parser.h"
+#import "AppCoordinator.h"
 
 @interface AppDelegate ()
+
+@property (nonatomic, strong) AppCoordinator *appCoordinator;
 
 @end
 
@@ -22,17 +23,11 @@
     // Override point for customization after application launch.
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = ({        
-        Parser *parser = [[Parser alloc] init];
-        DataViewController *controller = [[DataViewController alloc] init];
-        [parser getLatestDataWithCompletion:^(Data *data, NSError *error) {
-            controller.data = data;
-            if (error)
-                NSLog(@"get data error: %@", error);
-        }];        
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-        navigationController;                
-    });
+    self.window.rootViewController = [[UINavigationController alloc] init];
+    
+    self.appCoordinator = [[AppCoordinator alloc] initWithNavigationController:(UINavigationController *)self.window.rootViewController];
+    [self.appCoordinator start];
+    
     [self.window makeKeyAndVisible];
     
     return YES;

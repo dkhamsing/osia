@@ -11,10 +11,15 @@
 /* Displays screenshots */
 @interface ScreenshotsController : UIViewController
 
+@property (nonatomic, copy) void (^didSelectAppStore)();
+
+@property (nonatomic, copy) void (^didSelectSource)();
+
 @property (nonatomic, strong) NSArray *screenshots;
 
-@property (nonatomic, strong) NSURL *appStoreUrl;
+/* Buttons */
+@property (nonatomic) BOOL hideLeftButton;
 
-@property (nonatomic, strong) NSURL *sourceUrl;
+@property (nonatomic, strong) NSString *sourceTitle;
 
 @end
