@@ -15,4 +15,6 @@
 
 @property (nonatomic, strong) Data *data;
 
+@property (nonatomic, copy) void (^didSelectApp)(NSDictionary *app);
+
 @end

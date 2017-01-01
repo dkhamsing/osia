@@ -7,7 +7,6 @@
 //
 
 #import "ScreenshotsController.h"
-@import SafariServices;
 
 @interface ScreenshotCell : UICollectionViewCell
 
@@ -100,13 +99,9 @@
     
     [self.collectionView reloadData];
     
-    self.leftButton.hidden = self.appStoreUrl == nil;
+    self.leftButton.hidden = self.hideLeftButton;
     
-    {
-        NSString *title = [self.sourceUrl.absoluteString.lowercaseString containsString:@"//github.com"] ? @"GitHub" : @"Source";
-        [self.rightButton setTitle:title forState:UIControlStateNormal];
-    }
-
+    [self.rightButton setTitle:self.sourceTitle forState:UIControlStateNormal];
 }
 
 static NSString * const kCollectionId = @"kCollectionId";
@@ -173,14 +168,14 @@ static NSString * const kCollectionId = @"kCollectionId";
 
 - (void)actionLeft;
 {
-    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:self.appStoreUrl];
-    [self.navigationController pushViewController:safariViewController animated:YES];
+    if (self.didSelectAppStore)
+        self.didSelectAppStore();
 }
 
 - (void)actionRight;
 {
-    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:self.sourceUrl];
-    [self.navigationController pushViewController:safariViewController animated:YES];
+    if (self.didSelectSource)
+        self.didSelectSource();
 }
 
 #pragma mark Collection

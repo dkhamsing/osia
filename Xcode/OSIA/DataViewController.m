@@ -11,17 +11,11 @@
 // Models
 #import "Data.h"
 
-// Misc
-@import SafariServices;
-#import "ScreenshotsController.h"
-
 @interface DataViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) NSArray *dataSource;
-
-@property (nonatomic, strong) NSURL *appStoreLink;
 
 @end
 
@@ -253,48 +247,15 @@ static NSString * const kSwiftMarker = @" Swift ";
     id item = self.dataSource[indexPath.row];
     if ([item isKindOfClass:[NSDictionary class]]) {
         NSDictionary *app = (NSDictionary *)item;
-
-        NSString *key = @"itunes";
-        if ([app.allKeys containsObject:key]) {
-            NSString *appStoreLink = app[@"itunes"];
-            self.appStoreLink = [NSURL URLWithString:appStoreLink];
-        }
-        else
-            self.appStoreLink = nil;
-        
-        NSString *source = item[@"source"];
-        NSURL *url = [NSURL URLWithString:source];
-        
-        NSString *screenshotsKey = @"screenshots";
-        BOOL hasScreenshots = [app.allKeys containsObject:screenshotsKey];
-        if (hasScreenshots) {
-            ScreenshotsController *controller = [[ScreenshotsController alloc] init];
-            controller.screenshots = app[screenshotsKey];
-            controller.sourceUrl   = url;
-            controller.appStoreUrl = self.appStoreLink;            
-            [self.navigationController pushViewController:controller animated:YES];
-            return;
-        }
-        
-        SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
-        safariViewController.title = item[@"title"];
-        
-        if (self.appStoreLink)
-            safariViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"App Store" style:UIBarButtonItemStylePlain target:self action:@selector(openAppStoreLink)];
-        
-        [self.navigationController pushViewController:safariViewController animated:YES];
-        return;
+        if (self.didSelectApp)
+            self.didSelectApp(app);
     }
-    
-    // Data
-    DataViewController *controller = [[DataViewController alloc] init];
-    controller.data = item;
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
-- (void)openAppStoreLink;
-{
-    [[UIApplication sharedApplication] openURL:self.appStoreLink];
+    else {
+        DataViewController *controller = [[DataViewController alloc] init];
+        controller.data = item;
+        controller.didSelectApp = self.didSelectApp;
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 }
 
 @end

@@ -17,6 +17,7 @@
 		D65AC8461D42C857009A9AD4 /* Data.m in Sources */ = {isa = PBXBuildFile; fileRef = D65AC8451D42C857009A9AD4 /* Data.m */; };
 		D65AC84C1D42DAC0009A9AD4 /* DataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D65AC84B1D42DAC0009A9AD4 /* DataViewController.m */; };
 		D65AC84F1D466E55009A9AD4 /* Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = D65AC84E1D466E55009A9AD4 /* Parser.m */; };
+		D65F80F11E1857D40058E59A /* AppCoordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = D65F80F01E1857D40058E59A /* AppCoordinator.m */; };
 		D6E80AC61D42A38C00C92657 /* contents.json in Resources */ = {isa = PBXBuildFile; fileRef = D6E80AC51D42A38C00C92657 /* contents.json */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +60,8 @@
 		D65AC84B1D42DAC0009A9AD4 /* DataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataViewController.m; sourceTree = "<group>"; };
 		D65AC84D1D466E55009A9AD4 /* Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
 		D65AC84E1D466E55009A9AD4 /* Parser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Parser.m; sourceTree = "<group>"; };
+		D65F80EF1E1857D40058E59A /* AppCoordinator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCoordinator.h; sourceTree = "<group>"; };
+		D65F80F01E1857D40058E59A /* AppCoordinator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCoordinator.m; sourceTree = "<group>"; };
 		D6E80AC51D42A38C00C92657 /* contents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = contents.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -110,6 +113,8 @@
 		D65589C01D42A3620033DD9D /* OSIA */ = {
 			isa = PBXGroup;
 			children = (
+				D65F80EF1E1857D40058E59A /* AppCoordinator.h */,
+				D65F80F01E1857D40058E59A /* AppCoordinator.m */,
 				D65589C41D42A3620033DD9D /* AppDelegate.h */,
 				D65589C51D42A3620033DD9D /* AppDelegate.m */,
 				D65589CD1D42A3620033DD9D /* Assets.xcassets */,
@@ -286,6 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D65589C61D42A3620033DD9D /* AppDelegate.m in Sources */,
+				D65F80F11E1857D40058E59A /* AppCoordinator.m in Sources */,
 				D62ED4AE1DDCBFB100D2CF42 /* ScreenshotsController.m in Sources */,
 				D65589C31D42A3620033DD9D /* main.m in Sources */,
 				D65AC8461D42C857009A9AD4 /* Data.m in Sources */,
