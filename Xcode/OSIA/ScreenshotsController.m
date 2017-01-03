@@ -10,9 +10,11 @@
 
 @interface ScreenshotCell : UICollectionViewCell
 
-@property (nonatomic, strong) NSString *urlString;
-
 @property (nonatomic, strong, readonly) UIImageView *imageView;
+
+@property (nonatomic, strong, readonly) UIActivityIndicatorView *spinner;
+
+@property (nonatomic, strong) NSString *urlString;
 
 @end
 
@@ -35,6 +37,8 @@
     NSURL *url = [NSURL URLWithString:urlString];
     
     NSURLSessionDataTask *task = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        [self.spinner stopAnimating];
+        
         if (error)
             NSLog(@"error: %@", error);                    
         else
@@ -46,11 +50,16 @@
 - (void)setup;
 {
     _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
+    _spinner = [[UIActivityIndicatorView alloc] initWithFrame:self.bounds];
     
     [self.contentView addSubview:self.imageView];
+    [self.contentView addSubview:self.spinner];
     
     self.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    
+    self.spinner.autoresizingMask = self.imageView.autoresizingMask;
+    [self.spinner startAnimating];
 }
 
 @end
