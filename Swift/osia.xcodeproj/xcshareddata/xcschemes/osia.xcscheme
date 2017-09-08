@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0720"
+   LastUpgradeVersion = "0900"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D65589BD1D42A3620033DD9D"
-               BuildableName = "OSIA.app"
-               BlueprintName = "OSIA"
-               ReferencedContainer = "container:OSIA.xcodeproj">
+               BlueprintIdentifier = "6559462B1F3D6F0D00EB6B64"
+               BuildableName = "osia.app"
+               BlueprintName = "osia"
+               ReferencedContainer = "container:osia.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -26,36 +26,17 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D65589D61D42A3620033DD9D"
-               BuildableName = "OSIATests.xctest"
-               BlueprintName = "OSIATests"
-               ReferencedContainer = "container:OSIA.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D65589E11D42A3620033DD9D"
-               BuildableName = "OSIAUITests.xctest"
-               BlueprintName = "OSIAUITests"
-               ReferencedContainer = "container:OSIA.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D65589BD1D42A3620033DD9D"
-            BuildableName = "OSIA.app"
-            BlueprintName = "OSIA"
-            ReferencedContainer = "container:OSIA.xcodeproj">
+            BlueprintIdentifier = "6559462B1F3D6F0D00EB6B64"
+            BuildableName = "osia.app"
+            BlueprintName = "osia"
+            ReferencedContainer = "container:osia.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -65,6 +46,7 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      language = ""
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -75,10 +57,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D65589BD1D42A3620033DD9D"
-            BuildableName = "OSIA.app"
-            BlueprintName = "OSIA"
-            ReferencedContainer = "container:OSIA.xcodeproj">
+            BlueprintIdentifier = "6559462B1F3D6F0D00EB6B64"
+            BuildableName = "osia.app"
+            BlueprintName = "osia"
+            ReferencedContainer = "container:osia.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -94,10 +76,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D65589BD1D42A3620033DD9D"
-            BuildableName = "OSIA.app"
-            BlueprintName = "OSIA"
-            ReferencedContainer = "container:OSIA.xcodeproj">
+            BlueprintIdentifier = "6559462B1F3D6F0D00EB6B64"
+            BuildableName = "osia.app"
+            BlueprintName = "osia"
+            ReferencedContainer = "container:osia.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
