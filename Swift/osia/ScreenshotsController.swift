@@ -51,7 +51,7 @@ class ScreenshotCell: UICollectionViewCell {
     }
 }
 
-class ScreenshotsController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class ScreenshotsController: UIViewController {
     var collectionView: UICollectionView?
     var delegate: SelectURL?
     var screenshots: [URL]?
@@ -98,8 +98,7 @@ class ScreenshotsController: UIViewController, UICollectionViewDataSource, UICol
     }
 }
 
-// MARK: Collection view
-extension ScreenshotsController {
+extension ScreenshotsController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return screenshots?.count ?? 0
     }
@@ -117,10 +116,12 @@ extension ScreenshotsController {
         
         return c
     }
-    
+}
+
+extension ScreenshotsController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var size = self.view.bounds.size
         size.height -= 170
         return size
-    }
+    }    
 }

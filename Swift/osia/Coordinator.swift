@@ -9,7 +9,7 @@
 import UIKit
 import SafariServices
 
-final class Coordinator: SelectDelegate, SelectURL {
+final class Coordinator {
     let navigationController: UINavigationController
     let title: String = "OSIA"
     let url: String = "https://raw.githubusercontent.com/dkhamsing/open-source-ios-apps/master/contents.json"
@@ -34,8 +34,7 @@ final class Coordinator: SelectDelegate, SelectURL {
     }
 }
 
-/// SelectDelegate
-extension Coordinator {
+extension Coordinator: SelectDelegate {
     func didSelectApp(_ app: App) {        
         if app.screenshots?.count ?? 0 > 0 {
             let s = ScreenshotsController()
@@ -60,8 +59,7 @@ extension Coordinator {
     }
 }
 
-/// SelectURL
-extension Coordinator {
+extension Coordinator: SelectURL {
     func didSelectURL(_ url: URL?) {
         if let u = url {
             let s = SFSafariViewController.init(url: u)

@@ -57,7 +57,7 @@ class Utils {
         var items = [String: Array<App>]()
         
         do {
-            let keys = App.JSON()
+            let keys = App.Constants()
             
             for dictionary in apps {
                 var j = App()
@@ -100,7 +100,7 @@ class Utils {
         var children = [AppCategory]()
         
         do {
-            let keys = AppCategory.JSON()
+            let keys = AppCategory.Constants()
             
             for dictionary in categories {
                 var c = AppCategory()
@@ -137,7 +137,7 @@ class Utils {
 }
 
 fileprivate extension App {
-    struct JSON {
+    struct Constants {
         let categoryIds = "category-ids"
         let description = "description"
         let itunes = "itunes"
@@ -173,7 +173,7 @@ fileprivate extension AppCategory {
         return list
     }
     
-    struct JSON {
+    struct Constants {
         let id = "id"
         let description = "description"
         let title = "title"
