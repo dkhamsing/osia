@@ -16,7 +16,7 @@ protocol Display {
 
 /// App struct.
 struct App: Display {
-    var isCategory: Bool = false
+    var isCategory = false
     var title: String?
     
     var categoryIds: [String]?
@@ -27,9 +27,10 @@ struct App: Display {
     var stars: Int?
     var tags: [String]?
     
-    func isAppStore() -> Bool {
-        return self.itunes != nil
-    }
+//    not used
+//    func isAppStore() -> Bool {
+//        return self.itunes != nil
+//    }
     
     func isArchive() -> Bool {
         return self.tags?.contains("archive") == true
@@ -37,8 +38,7 @@ struct App: Display {
     
     func isSwift() -> Bool {
         return self.tags?.contains("swift") == true
-    }
-    
+    }    
 }
 
 /// App category struct.

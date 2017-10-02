@@ -13,7 +13,7 @@ protocol SelectDelegate {
     func didSelectCategory(_ category: AppCategory)
 }
 
-class CategoryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class CategoryController: UIViewController {
     var tableView = UITableView()
     var category = AppCategory()
     var delegate: SelectDelegate?
@@ -37,8 +37,7 @@ class CategoryController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 }
 
-/// Table view
-extension CategoryController {
+extension CategoryController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return category.dataSource().count
     }
@@ -67,7 +66,9 @@ extension CategoryController {
         
         return c
     }
-    
+}
+
+extension CategoryController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
