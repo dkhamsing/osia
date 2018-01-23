@@ -2,14 +2,16 @@
 
 Super basic iOS app to browse [`open-source-ios-apps`](https://github.com/dkhamsing/open-source-ios-apps) :octocat:
 
-![](Assets/0.1.png)
+![](Assets/0.2.png)
 
 ## Getting Started
 
 - `git clone https://github.com/dkhamsing/osia.git`
 - `open Swift/osia.xcodeproj`
 - <kbd>CTRL</kbd> + <kbd>R</kbd>
-- :sunglasses:
+
+
+:sunglasses:
 
 You can find the Objective-C version [here](https://github.com/dkhamsing/osia/releases).
 

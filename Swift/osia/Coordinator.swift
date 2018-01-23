@@ -21,7 +21,7 @@ final class Coordinator {
     func start() {
         let v = CategoryController()
         v.delegate = self
-        v.title = self.title
+        v.title = self.title        
         navigationController.pushViewController(v, animated: false)
         
         Utils.fetchJsonFeed(url: self.url) { c in
@@ -55,6 +55,7 @@ extension Coordinator: SelectDelegate {
         let v = CategoryController()
         v.category = category
         v.delegate = self
+        v.title = category.title
         navigationController.pushViewController(v, animated: true)
     }
 }
@@ -63,7 +64,7 @@ extension Coordinator: SelectURL {
     func didSelectURL(_ url: URL?) {
         if let u = url {
             let s = SFSafariViewController.init(url: u)
-            navigationController.pushViewController(s, animated: true)
+            navigationController.present(s, animated: true, completion: nil)
         }
     }
 }

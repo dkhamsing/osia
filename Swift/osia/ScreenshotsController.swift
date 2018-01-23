@@ -76,6 +76,11 @@ class ScreenshotsController: UIViewController {
     }
     
     func setup() {
+        // iOS 11
+        if #available(iOS 11.0, *) {
+            navigationItem.largeTitleDisplayMode = .never
+        }
+        
         // Bar button
         let barButton = UIBarButtonItem.init(title: "GitHub", style: .plain, target: self, action: #selector(github))
         self.navigationItem.rightBarButtonItem = barButton
