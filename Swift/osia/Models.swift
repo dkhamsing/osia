@@ -51,7 +51,7 @@ struct App: Display {
 struct AppCategory: Display {
     var isCategory = true
     var title: String?
-        
+    
     var id: String?
     var description: String?
     var parent: String?

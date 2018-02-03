@@ -13,21 +13,21 @@ protocol SelectDelegate {
     func didSelectCategory(_ category: AppCategory)
 }
 
-class CategoryController: UIViewController {
+final class CategoryController: UIViewController {
     var tableView = UITableView()
     var category = AppCategory()
     var delegate: SelectDelegate?
-    
-    struct Constants {
-        static let cellApp = "cellApp"
-        static let cellCategory = "cellCategory"
-        static let rowHeight: CGFloat = 55
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        self.setup()
+    }
+}
+
+private extension CategoryController {
+    func setup() {
         let f = view.frame
         tableView.frame = f
         tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -38,6 +38,12 @@ class CategoryController: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellApp)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellCategory)
     }
+}
+
+private struct Constants {
+    static let cellApp = "cellApp"
+    static let cellCategory = "cellCategory"
+    static let rowHeight: CGFloat = 55
 }
 
 extension CategoryController: UITableViewDataSource {

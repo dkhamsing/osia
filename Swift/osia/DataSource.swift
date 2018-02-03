@@ -10,12 +10,12 @@ import UIKit
 
 final class DataSource {
     
-    /// Fetch JSON
+    /// Create data source from endpoint.
     ///
     /// - parameters:
     ///   - url: Endpoint URL
     ///   - completion: Completion block.
-    class func create(url: String, completion: @escaping (_: AppCategory) -> Void ) {
+    static func create(url: String, completion: @escaping (_: AppCategory) -> Void ) {
         guard let endpoint = URL(string: url) else {
             print("Error: creating endpoint")
             return
@@ -54,7 +54,7 @@ private extension DataSource {
     ///
     /// - parameter json: JSON retrieved from endpoint.
     /// - returns: `AppCategory` model object.
-    class func parse(json: [String: Any]) -> AppCategory? {
+    static func parse(json: [String: Any]) -> AppCategory? {
         guard let categories = json["categories"] as? [[String: Any]],
             let apps = json["projects"] as? [[String: Any]] else {
                 return nil
@@ -67,7 +67,7 @@ private extension DataSource {
         return root
     }
     
-    class func generateMapping(apps: [[String: Any]]) -> [String: [App]] {
+    static func generateMapping(apps: [[String: Any]]) -> [String: [App]] {
         var items = [String: [App]]()
         
         let keys = App.Constants.self
@@ -111,32 +111,30 @@ private extension DataSource {
         return items
     }
     
-    class func generateRoot(mapping items: [String: [App]], categories: [[String: Any]]) -> AppCategory {
+    static func generateRoot(mapping items: [String: [App]], categories: [[String: Any]]) -> AppCategory {
         var cats = [AppCategory]()
         var children = [AppCategory]()
         
-        do {
-            let keys = AppCategory.Constants.self
+        let keys = AppCategory.Constants.self
+        
+        for dictionary in categories {
+            var c = AppCategory()
             
-            for dictionary in categories {
-                var c = AppCategory()
-                
-                c.id = dictionary[keys.id] as? String
-                c.description = dictionary[keys.description] as? String
-                c.title = dictionary[keys.title] as? String
-                c.parent = dictionary[keys.parent] as? String
-                
-                if let id = c.id {
-                    c.apps = items[id] ?? []
-                    c.apps = c.apps?.sorted {$0.title?.lowercased() ?? "" < $1.title?.lowercased() ?? ""}
-                }
-                
-                if c.isParent() {
-                    cats.append(c)
-                }
-                else {
-                    children.append(c)
-                }
+            c.id = dictionary[keys.id] as? String
+            c.description = dictionary[keys.description] as? String
+            c.title = dictionary[keys.title] as? String
+            c.parent = dictionary[keys.parent] as? String
+            
+            if let id = c.id {
+                c.apps = items[id] ?? []
+                c.apps = c.apps?.sorted {$0.title?.lowercased() ?? "" < $1.title?.lowercased() ?? ""}
+            }
+            
+            if c.isParent() {
+                cats.append(c)
+            }
+            else {
+                children.append(c)
             }
         }
         

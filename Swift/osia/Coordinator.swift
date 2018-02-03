@@ -10,11 +10,6 @@ import UIKit
 import SafariServices
 
 final class Coordinator {
-    struct Constants {
-        static let title = "OSIA"
-        static let url = "https://raw.githubusercontent.com/dkhamsing/open-source-ios-apps/master/contents.json"
-    }
-    
     let navigationController: UINavigationController
     
     init(navigationController: UINavigationController) {
@@ -35,6 +30,11 @@ final class Coordinator {
             }
         }
     }
+}
+
+private struct Constants {
+    static let title = "OSIA"
+    static let url = "https://raw.githubusercontent.com/dkhamsing/open-source-ios-apps/master/contents.json"
 }
 
 extension Coordinator: SelectDelegate {

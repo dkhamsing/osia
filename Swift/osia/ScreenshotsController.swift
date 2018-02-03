@@ -12,56 +12,11 @@ protocol SelectURL {
     func didSelectURL(_ url: URL?)
 }
 
-class ScreenshotCell: UICollectionViewCell {
-    var imageView = UIImageView()
-    
-    var url: URL? = nil {
-        didSet {
-            if let u = url {
-                DispatchQueue.global(qos: .userInitiated).async {
-                    do {
-                        let data = try Data.init(contentsOf: u)
-                        
-                        DispatchQueue.main.async {
-                            self.imageView.image = UIImage.init(data:data)
-                        }
-                    } catch {
-                        print("Error getting image data.")
-                    }
-                }
-            }
-        }
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.setup()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    func setup() {
-        imageView.frame = contentView.bounds
-        imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        imageView.contentMode = .scaleAspectFit
-        
-        self.contentView.addSubview(imageView)
-    }
-}
-
-class ScreenshotsController: UIViewController {
+final class ScreenshotsController: UIViewController {
     var collectionView: UICollectionView?
     var delegate: SelectURL?
     var screenshots: [URL]?
     var didSelectSourceUrl: (() -> Void)?
-    
-    struct Constants {
-        static let cellId = "cell"
-        static let barButtonTitle = "GitHub"
-        static let inset: CGFloat = 170
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,8 +29,10 @@ class ScreenshotsController: UIViewController {
         
         collectionView?.collectionViewLayout.invalidateLayout()
     }
-    
-    func github() {
+}
+
+private extension ScreenshotsController {
+    @objc func github() {
         didSelectSourceUrl?()
     }
     
@@ -107,6 +64,12 @@ class ScreenshotsController: UIViewController {
     }
 }
 
+private struct Constants {
+    static let cellId = "cell"
+    static let barButtonTitle = "GitHub"
+    static let inset: CGFloat = 170
+}
+
 extension ScreenshotsController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return screenshots?.count ?? 0
@@ -119,7 +82,7 @@ extension ScreenshotsController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let url = screenshots?[indexPath.row]
-                
+        
         let c = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellId, for: indexPath) as! ScreenshotCell
         c.url = url
         
