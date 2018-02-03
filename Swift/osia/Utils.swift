@@ -136,7 +136,7 @@ class Utils {
     
 }
 
-fileprivate extension App {
+private extension App {
     struct Constants {
         let categoryIds = "category-ids"
         let description = "description"
@@ -149,7 +149,7 @@ fileprivate extension App {
     }
 }
 
-fileprivate extension AppCategory {
+private extension AppCategory {
     static func insert(child: AppCategory, list: [AppCategory]) -> [AppCategory] {
         if let index = list.index(where: { (item) -> Bool in
             item.id == child.parent

@@ -88,7 +88,7 @@ extension CategoryController: UITableViewDelegate {
 }
 
 /// Table data source
-extension AppCategory {
+fileprivate extension AppCategory {
     fileprivate func dataSource() -> [Any] {
         var list: [Any] = children ?? []
         
