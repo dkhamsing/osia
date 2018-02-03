@@ -1,4 +1,4 @@
 language: objective-c
-osx_image: xcode8.3
-script:  
-  - xcodebuild build -project Swift/osia.xcodeproj/ -scheme osia -destination 'platform=iOS Simulator,name=iPhone 7,OS=10.3.1' | xcpretty -s
+osx_image: xcode9.2
+script:
+  - xcodebuild build -project Swift/osia.xcodeproj/ -scheme osia -destination 'platform=iOS Simulator,name=iPhone 8,OS=11.2' | xcpretty -s
