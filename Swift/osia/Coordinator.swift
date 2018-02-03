@@ -10,9 +10,12 @@ import UIKit
 import SafariServices
 
 final class Coordinator {
+    struct Constants {
+        static let title = "OSIA"
+        static let url = "https://raw.githubusercontent.com/dkhamsing/open-source-ios-apps/master/contents.json"
+    }
+    
     let navigationController: UINavigationController
-    let title: String = "OSIA"
-    let url: String = "https://raw.githubusercontent.com/dkhamsing/open-source-ios-apps/master/contents.json"
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -21,10 +24,10 @@ final class Coordinator {
     func start() {
         let v = CategoryController()
         v.delegate = self
-        v.title = self.title        
+        v.title = Constants.title
         navigationController.pushViewController(v, animated: false)
         
-        Utils.fetchJsonFeed(url: self.url) { c in
+        Utils.fetchJsonFeed(url: Constants.url) { c in
             v.category = c
             
             DispatchQueue.main.async {

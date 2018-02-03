@@ -57,7 +57,11 @@ class ScreenshotsController: UIViewController {
     var screenshots: [URL]?
     var didSelectSourceUrl: (() -> Void)?
     
-    let cellId = "cell"
+    struct Constants {
+        static let cellId = "cell"
+        static let barButtonTitle = "GitHub"
+        static let inset: CGFloat = 170
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,7 +86,7 @@ class ScreenshotsController: UIViewController {
         }
         
         // Bar button
-        let barButton = UIBarButtonItem.init(title: "GitHub", style: .plain, target: self, action: #selector(github))
+        let barButton = UIBarButtonItem.init(title: Constants.barButtonTitle, style: .plain, target: self, action: #selector(github))
         self.navigationItem.rightBarButtonItem = barButton
         
         // Collection
@@ -95,7 +99,7 @@ class ScreenshotsController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.isPagingEnabled = true
-        collectionView.register(ScreenshotCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(ScreenshotCell.self, forCellWithReuseIdentifier: Constants.cellId)
         
         self.view.addSubview(collectionView)
         
@@ -116,7 +120,7 @@ extension ScreenshotsController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let url = screenshots?[indexPath.row]
                 
-        let c = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ScreenshotCell
+        let c = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellId, for: indexPath) as! ScreenshotCell
         c.url = url
         
         return c
@@ -126,7 +130,7 @@ extension ScreenshotsController: UICollectionViewDataSource {
 extension ScreenshotsController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var size = self.view.bounds.size
-        size.height -= 170
+        size.height -= Constants.inset
         return size
     }    
 }

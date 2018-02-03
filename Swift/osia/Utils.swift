@@ -9,7 +9,7 @@
 import UIKit
 
 /// Miscellaneous helpers.
-class Utils {
+final class Utils {
     enum JsonError: String, Error {
         case noData = "Error: no data"
         case conversionFailed = "Error: conversion from JSON failed"
@@ -25,6 +25,7 @@ class Utils {
             print("Error: creating endpoint")
             return
         }
+        
         URLSession.shared.dataTask(with: endpoint) { (data, response, error) in
             do {
                 guard let data = data else {
@@ -52,12 +53,14 @@ class Utils {
     /// - returns: `AppCategory` model object.
     class func parse(json: [String: Any]) -> AppCategory? {
         guard let categories = json["categories"] as? [[String: Any]],
-            let apps = json["projects"] as? [[String: Any]] else {return nil}
+            let apps = json["projects"] as? [[String: Any]] else {
+                return nil
+        }
         
         var items = [String: Array<App>]()
         
         do {
-            let keys = App.Constants()
+            let keys = App.Constants.self
             
             for dictionary in apps {
                 var j = App()
@@ -100,7 +103,7 @@ class Utils {
         var children = [AppCategory]()
         
         do {
-            let keys = AppCategory.Constants()
+            let keys = AppCategory.Constants.self
             
             for dictionary in categories {
                 var c = AppCategory()
@@ -138,14 +141,14 @@ class Utils {
 
 private extension App {
     struct Constants {
-        let categoryIds = "category-ids"
-        let description = "description"
-        let itunes = "itunes"
-        let screenshots = "screenshots"
-        let source = "source"
-        let stars = "stars"
-        let tags = "tags"
-        let title = "title"
+        static let categoryIds = "category-ids"
+        static let description = "description"
+        static let itunes = "itunes"
+        static let screenshots = "screenshots"
+        static let source = "source"
+        static let stars = "stars"
+        static let tags = "tags"
+        static let title = "title"
     }
 }
 
@@ -174,9 +177,9 @@ private extension AppCategory {
     }
     
     struct Constants {
-        let id = "id"
-        let description = "description"
-        let title = "title"
-        let parent = "parent"
+        static let id = "id"
+        static let description = "description"
+        static let title = "title"
+        static let parent = "parent"
     }
 }

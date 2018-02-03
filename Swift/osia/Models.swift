@@ -16,6 +16,7 @@ protocol Display {
 
 /// App struct.
 struct App: Display {
+    
     var isCategory = false
     var title: String?
     
@@ -33,12 +34,17 @@ struct App: Display {
 //    }
     
     func isArchive() -> Bool {
-        return self.tags?.contains("archive") == true
+        return self.tags?.contains(Constants.archive) == true
     }
     
     func isSwift() -> Bool {
-        return self.tags?.contains("swift") == true
-    }    
+        return self.tags?.contains(Constants.swift) == true
+    }
+    
+    private struct Constants {
+        static let archive = "archive"
+        static let swift = "swift"
+    }
 }
 
 /// App category struct.

@@ -18,8 +18,11 @@ class CategoryController: UIViewController {
     var category = AppCategory()
     var delegate: SelectDelegate?
     
-    let cellApp = "cellApp"
-    let cellCategory = "cellCategory"
+    struct Constants {
+        static let cellApp = "cellApp"
+        static let cellCategory = "cellCategory"
+        static let rowHeight: CGFloat = 55
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,8 +35,8 @@ class CategoryController: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellApp)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellCategory)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellApp)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellCategory)
     }
 }
 
@@ -47,14 +50,14 @@ extension CategoryController: UITableViewDataSource {
         
         if let item = category.dataSource()[indexPath.row] as? Display {
             if let i = item as? App {
-                c = UITableViewCell.init(style: .subtitle, reuseIdentifier: cellApp)
+                c = UITableViewCell.init(style: .subtitle, reuseIdentifier: Constants.cellApp)
                 c.detailTextLabel?.text = i.descr
                 
             }
             else if let i = item as? AppCategory {
                 let value = i.dataSource().count
                 
-                c = UITableViewCell.init(style: .value1, reuseIdentifier: cellCategory)
+                c = UITableViewCell.init(style: .value1, reuseIdentifier: Constants.cellCategory)
                 let count = "\(value)"
                 c.detailTextLabel?.text = count
             }
@@ -83,7 +86,7 @@ extension CategoryController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 55
+        return Constants.rowHeight
     }
 }
 
