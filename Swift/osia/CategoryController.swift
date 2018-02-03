@@ -40,10 +40,11 @@ private extension CategoryController {
     }
 }
 
-private struct Constants {
+private struct Constants {    
     static let cellApp = "cellApp"
     static let cellCategory = "cellCategory"
     static let rowHeight: CGFloat = 55
+    static let subtitleColor = UIColor.gray
 }
 
 extension CategoryController: UITableViewDataSource {
@@ -68,7 +69,7 @@ extension CategoryController: UITableViewDataSource {
                 c.detailTextLabel?.text = count
             }
             
-            c.detailTextLabel?.textColor = UIColor.gray
+            c.detailTextLabel?.textColor = Constants.subtitleColor
             c.textLabel?.text = item.title
             c.accessoryType = item.isCategory ? .disclosureIndicator : .none
         }
