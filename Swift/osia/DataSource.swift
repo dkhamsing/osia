@@ -1,26 +1,21 @@
 //
-//  Utils.swift
+//  DataSource.swift
 //  osia
 //
-//  Created by Daniel on 8/10/17.
-//  Copyright © 2017 Daniel Khamsing. All rights reserved.
+//  Created by Daniel on 2/3/18.
+//  Copyright © 2018 Daniel Khamsing. All rights reserved.
 //
 
 import UIKit
 
-/// Miscellaneous helpers.
-final class Utils {
-    enum JsonError: String, Error {
-        case noData = "Error: no data"
-        case conversionFailed = "Error: conversion from JSON failed"
-    }
+final class DataSource {
     
     /// Fetch JSON
     ///
     /// - parameters:
     ///   - url: Endpoint URL
     ///   - completion: Completion block.
-    class func fetchJsonFeed(url: String, completion: @escaping (_: AppCategory) -> Void ) {
+    class func create(url: String, completion: @escaping (_: AppCategory) -> Void ) {
         guard let endpoint = URL(string: url) else {
             print("Error: creating endpoint")
             return
@@ -38,13 +33,21 @@ final class Utils {
                 
                 if let root = parse(json: json) {
                     completion(root)
-                }                
+                }
             } catch let error as JsonError {
                 print(error.rawValue)
             } catch let error as NSError {
                 print(error.debugDescription)
             }
             }.resume()
+    }
+    
+}
+
+private extension DataSource {
+    enum JsonError: String, Error {
+        case noData = "Error: no data"
+        case conversionFailed = "Error: conversion from JSON failed"
     }
     
     /// Parse JSON into app model.
@@ -57,48 +60,58 @@ final class Utils {
                 return nil
         }
         
-        var items = [String: Array<App>]()
+        let mapping = generateMapping(apps: apps)
         
-        do {
-            let keys = App.Constants.self
+        let root = generateRoot(mapping: mapping, categories: categories)
+        
+        return root
+    }
+    
+    class func generateMapping(apps: [[String: Any]]) -> [String: [App]] {
+        var items = [String: [App]]()
+        
+        let keys = App.Constants.self
+        
+        for dictionary in apps {
+            var j = App()
             
-            for dictionary in apps {
-                var j = App()
-                
-                j.categoryIds = dictionary[keys.categoryIds] as? [String]
-                j.descr = dictionary[keys.description] as? String
-                if let itunes = dictionary[keys.itunes] as? String {
-                    j.itunes = URL(string:itunes)
-                }
-                if let screenshots = dictionary[keys.screenshots] as? [String] {
-                    j.screenshots = screenshots.flatMap { URL(string: $0) }
-                }
-                if let source = dictionary[keys.source] as? String {
-                    j.source = URL(string:source)
-                }
-                j.stars = dictionary[keys.stars] as? Int
-                j.tags = dictionary[keys.tags] as? [String]
-                j.title = dictionary[keys.title] as? String
-                
-                if !j.isArchive() {
-                    if let cids = j.categoryIds {
-                        for id in cids {
-                            if items[id] == nil {
-                                items[id] = [j]
-                            }
-                            else {
-                                var list = items[id] as [App]?
-                                list?.append(j)
-                                
-                                items[id] = list
-                            }
+            j.categoryIds = dictionary[keys.categoryIds] as? [String]
+            j.descr = dictionary[keys.description] as? String
+            if let itunes = dictionary[keys.itunes] as? String {
+                j.itunes = URL(string:itunes)
+            }
+            if let screenshots = dictionary[keys.screenshots] as? [String] {
+                j.screenshots = screenshots.flatMap { URL(string: $0) }
+            }
+            if let source = dictionary[keys.source] as? String {
+                j.source = URL(string:source)
+            }
+            j.stars = dictionary[keys.stars] as? Int
+            j.tags = dictionary[keys.tags] as? [String]
+            j.title = dictionary[keys.title] as? String
+            
+            if !j.isArchive() {
+                if let cids = j.categoryIds {
+                    for id in cids {
+                        if items[id] == nil {
+                            items[id] = [j]
+                        }
+                        else {
+                            var list = items[id] as [App]?
+                            list?.append(j)
+                            
+                            items[id] = list
                         }
                     }
-                    
                 }
+                
             }
         }
         
+        return items
+    }
+    
+    class func generateRoot(mapping items: [String: [App]], categories: [[String: Any]]) -> AppCategory {
         var cats = [AppCategory]()
         var children = [AppCategory]()
         
@@ -136,7 +149,6 @@ final class Utils {
         
         return root
     }
-    
 }
 
 private extension App {

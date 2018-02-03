@@ -27,7 +27,7 @@ final class Coordinator {
         v.title = Constants.title
         navigationController.pushViewController(v, animated: false)
         
-        Utils.fetchJsonFeed(url: Constants.url) { c in
+        DataSource.create(url: Constants.url) { c in
             v.category = c
             
             DispatchQueue.main.async {
