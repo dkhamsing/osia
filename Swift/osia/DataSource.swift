@@ -13,7 +13,7 @@ final class DataSource {
     /// Create data source from endpoint.
     ///
     /// - parameters:
-    ///   - url: Endpoint URL
+    ///   - url: Endpoint URL.
     ///   - completion: Completion block.
     static func create(url: String, completion: @escaping (_: AppCategory) -> Void ) {
         guard let endpoint = URL(string: url) else {
@@ -27,11 +27,12 @@ final class DataSource {
                     throw JsonError.noData
                 }
                 
-                guard let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String: Any] else {
+                let decoder = JSONDecoder()
+                guard let content = try? decoder.decode(Content.self, from: data) else {
                     throw JsonError.conversionFailed
                 }
                 
-                if let root = parse(json: json) {
+                if let root = parse(content: content) {
                     completion(root)
                 }
             } catch let error as JsonError {
@@ -54,142 +55,75 @@ private extension DataSource {
     ///
     /// - parameter json: JSON retrieved from endpoint.
     /// - returns: `AppCategory` model object.
-    static func parse(json: [String: Any]) -> AppCategory? {
-        guard let categories = json["categories"] as? [[String: Any]],
-            let apps = json["projects"] as? [[String: Any]] else {
-                return nil
-        }
-        
-        let mapping = generateMapping(apps: apps)
-        
-        let root = generateRoot(mapping: mapping, categories: categories)
-        
+    static func parse(content: Content) -> AppCategory? {
+        let apps = generateMapping(apps: content.apps)
+        let root = generateRoot(apps: apps, categories: content.categories)
         return root
     }
     
-    static func generateMapping(apps: [[String: Any]]) -> [String: [App]] {
+    static func generateMapping(apps: [App]) -> [String: [App]] {
         var items = [String: [App]]()
-        
-        let keys = App.Constants.self
-        
-        for dictionary in apps {
-            var j = App()
-            
-            j.categoryIds = dictionary[keys.categoryIds] as? [String]
-            j.descr = dictionary[keys.description] as? String
-            if let itunes = dictionary[keys.itunes] as? String {
-                j.itunes = URL(string:itunes)
-            }
-            if let screenshots = dictionary[keys.screenshots] as? [String] {
-                j.screenshots = screenshots.flatMap { URL(string: $0) }
-            }
-            if let source = dictionary[keys.source] as? String {
-                j.source = URL(string:source)
-            }
-            j.stars = dictionary[keys.stars] as? Int
-            j.tags = dictionary[keys.tags] as? [String]
-            j.title = dictionary[keys.title] as? String
-            
-            if !j.isArchive() {
-                if let cids = j.categoryIds {
-                    for id in cids {
+        for app in apps {
+            if !app.isArchive() {
+                if let categoryIDs = app.categoryIds {
+                    for id in categoryIDs {
                         if items[id] == nil {
-                            items[id] = [j]
+                            items[id] = [app]
                         }
                         else {
                             var list = items[id] as [App]?
-                            list?.append(j)
-                            
+                            list?.append(app)
                             items[id] = list
                         }
                     }
                 }
-                
             }
         }
-        
         return items
     }
     
-    static func generateRoot(mapping items: [String: [App]], categories: [[String: Any]]) -> AppCategory {
-        var cats = [AppCategory]()
+    static func generateRoot(apps: [String: [App]], categories: [AppCategory]) -> AppCategory {
         var children = [AppCategory]()
-        
-        let keys = AppCategory.Constants.self
-        
-        for dictionary in categories {
-            var c = AppCategory()
-            
-            c.id = dictionary[keys.id] as? String
-            c.description = dictionary[keys.description] as? String
-            c.title = dictionary[keys.title] as? String
-            c.parent = dictionary[keys.parent] as? String
-            
-            if let id = c.id {
-                c.apps = items[id] ?? []
-                c.apps = c.apps?.sorted {$0.title?.lowercased() ?? "" < $1.title?.lowercased() ?? ""}
+        var generatedCategories = [AppCategory]()
+        for var category in categories {
+            if let id = category.id {
+                category.apps = apps[id] ?? []
+                category.apps = category.apps?.sorted { $0.title?.lowercased() ?? "" < $1.title?.lowercased() ?? "" }
             }
             
-            if c.isParent() {
-                cats.append(c)
+            if category.isParent() {
+                generatedCategories.append(category)
             }
             else {
-                children.append(c)
+                children.append(category)
             }
         }
-        
+    
         for child in children {
-            cats = AppCategory.insert(child: child, list: cats)
+            generatedCategories = AppCategory.insert(child: child, list: generatedCategories)
         }
         
         var root = AppCategory()
-        root.children = cats.sorted {$0.title ?? "" < $1.title ?? ""}
-        
+        root.children = generatedCategories.sorted { $0.title ?? "" < $1.title ?? "" }
         return root
-    }
-}
-
-private extension App {
-    struct Constants {
-        static let categoryIds = "category-ids"
-        static let description = "description"
-        static let itunes = "itunes"
-        static let screenshots = "screenshots"
-        static let source = "source"
-        static let stars = "stars"
-        static let tags = "tags"
-        static let title = "title"
     }
 }
 
 private extension AppCategory {
     static func insert(child: AppCategory, list: [AppCategory]) -> [AppCategory] {
-        if let index = list.index(where: { (item) -> Bool in
-            item.id == child.parent
-        }) {
-            var cat = list[index]
-            
-            if (cat.children) != nil {
-                cat.children?.append(child)
+        if let index = list.index(where: { $0.id == child.parent }) {
+            var categories = list[index]
+            if categories.children != nil {
+                categories.children?.append(child)
             }
             else {
-                cat.children = [child]
+                categories.children = [child]
             }
             
             var updated = list
-            
-            updated[index] = cat
-            
+            updated[index] = categories
             return updated
         }
-        
         return list
-    }
-    
-    struct Constants {
-        static let id = "id"
-        static let description = "description"
-        static let title = "title"
-        static let parent = "parent"
     }
 }
