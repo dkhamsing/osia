@@ -1,4 +1,9 @@
 language: objective-c
 osx_image: xcode9.2
+env:
+  - XCODE_SCHEME=osia
+    XCODE_PROJECT=Swift/osia.xcodeproj
+    XCODE_DESTINATION="platform=iOS Simulator,OS=11.2,name=iPhone 8"
 script:
-  - xcodebuild build -project Swift/osia.xcodeproj/ -scheme osia -destination 'platform=iOS Simulator,name=iPhone 8,OS=11.2' | xcpretty -s
+  - xcodebuild clean -project "$XCODE_PROJECT"
+  - set -o pipefail && xcodebuild build -project "$XCODE_PROJECT" -scheme "$XCODE_SCHEME" -destination "$XCODE_DESTINATION" | xcpretty -s
