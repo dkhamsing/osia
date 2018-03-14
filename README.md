@@ -8,7 +8,7 @@ Super basic iOS app to browse [`open-source-ios-apps`](https://github.com/dkhams
 
 - `git clone https://github.com/dkhamsing/osia.git`
 - `open Swift/osia.xcodeproj`
-- <kbd>CTRL</kbd> + <kbd>R</kbd>
+- <kbd>CMD</kbd> + <kbd>R</kbd>
 
 
 :sunglasses:
