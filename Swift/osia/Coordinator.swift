@@ -24,7 +24,6 @@ final class Coordinator {
         
         DataSource.create(url: Constants.url) { c in
             v.category = c
-            
             DispatchQueue.main.async {
                 v.tableView.reloadData()
             }

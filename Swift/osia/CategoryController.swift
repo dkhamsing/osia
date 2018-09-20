@@ -55,10 +55,10 @@ extension CategoryController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var c = UITableViewCell()
         
-        if let item = category.dataSource()[indexPath.row] as? Display {
+        if let item = category.dataSource()[indexPath.row] as? DisplayInterface {
             if let i = item as? App {
                 c = UITableViewCell.init(style: .subtitle, reuseIdentifier: Constants.cellApp)
-                c.detailTextLabel?.text = i.descr
+                c.detailTextLabel?.text = i.description
                 
             }
             else if let i = item as? AppCategory {
@@ -82,7 +82,7 @@ extension CategoryController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if let item = category.dataSource()[indexPath.row] as? Display {
+        if let item = category.dataSource()[indexPath.row] as? DisplayInterface {
             if let app = item as? App {
                 delegate?.didSelectApp(app)
             }
