@@ -33,7 +33,7 @@ struct AppCategory: Codable {
     }
 }
 
-extension AppCategory: DisplayInterface {
+extension AppCategory: Displayable {
     var isCategory: Bool {
         return true
     }

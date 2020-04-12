@@ -22,10 +22,12 @@ final class Coordinator {
         v.title = Constants.title
         navigationController.pushViewController(v, animated: false)
         
-        DataSource.create(url: Constants.url) { c in
-            v.category = c
-            DispatchQueue.main.async {
-                v.tableView.reloadData()
+        DataSource.create(url: Constants.url) { result in
+            if case .success(let c) = result {
+                v.category = c
+                DispatchQueue.main.async {
+                    v.tableView.reloadData()
+                }
             }
         }
     }
@@ -36,14 +38,12 @@ private struct Constants {
     static let url = "https://raw.githubusercontent.com/dkhamsing/open-source-ios-apps/master/contents.json"
 }
 
-extension Coordinator: SelectDelegate {
+extension Coordinator: Selectable {
     func didSelectApp(_ app: App) {        
         if app.screenshots?.count ?? 0 > 0 {
             let s = ScreenshotsController()
-            s.delegate = self            
-            s.didSelectSourceUrl = { () -> Void in
-                self.didSelectURL(app.source)
-            }
+            s.delegate = self
+            s.sourceURL = app.source 
             s.screenshots = app.screenshots
             s.title = app.title
             navigationController.pushViewController(s, animated: true)
@@ -62,11 +62,10 @@ extension Coordinator: SelectDelegate {
     }
 }
 
-extension Coordinator: SelectURL {
+extension Coordinator: URLTappable {
     func didSelectURL(_ url: URL?) {
-        if let u = url {
-            let s = SFSafariViewController.init(url: u)
-            navigationController.present(s, animated: true, completion: nil)
-        }
+        guard let u = url else { return }
+        let s = SFSafariViewController.init(url: u)
+        navigationController.present(s, animated: true, completion: nil)
     }
 }

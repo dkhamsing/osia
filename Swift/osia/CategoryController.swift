@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SelectDelegate {
+protocol Selectable {
     func didSelectApp(_ app: App)
     func didSelectCategory(_ category: AppCategory)
 }
@@ -16,7 +16,7 @@ protocol SelectDelegate {
 final class CategoryController: UIViewController {
     var tableView = UITableView()
     var category = AppCategory()
-    var delegate: SelectDelegate?
+    var delegate: Selectable?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,26 +54,25 @@ extension CategoryController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var c = UITableViewCell()
-        
-        if let item = category.dataSource()[indexPath.row] as? DisplayInterface {
-            if let i = item as? App {
-                c = UITableViewCell.init(style: .subtitle, reuseIdentifier: Constants.cellApp)
-                c.detailTextLabel?.text = i.description
-                
-            }
-            else if let i = item as? AppCategory {
-                let value = i.dataSource().count
-                
-                c = UITableViewCell.init(style: .value1, reuseIdentifier: Constants.cellCategory)
-                let count = "\(value)"
-                c.detailTextLabel?.text = count
-            }
-            
-            c.detailTextLabel?.textColor = Constants.subtitleColor
-            c.textLabel?.text = item.title
-            c.accessoryType = item.isCategory ? .disclosureIndicator : .none
+        guard let item = category.dataSource()[indexPath.row] as? Displayable else { return c }
+
+        if let i = item as? App {
+            c = UITableViewCell.init(style: .subtitle, reuseIdentifier: Constants.cellApp)
+            c.detailTextLabel?.text = i.description
+
         }
-        
+        else if let i = item as? AppCategory {
+            let value = i.dataSource().count
+
+            c = UITableViewCell.init(style: .value1, reuseIdentifier: Constants.cellCategory)
+            let count = "\(value)"
+            c.detailTextLabel?.text = count
+        }
+
+        c.detailTextLabel?.textColor = Constants.subtitleColor
+        c.textLabel?.text = item.title
+        c.accessoryType = item.isCategory ? .disclosureIndicator : .none
+
         return c
     }
 }
@@ -82,13 +81,13 @@ extension CategoryController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if let item = category.dataSource()[indexPath.row] as? DisplayInterface {
-            if let app = item as? App {
-                delegate?.didSelectApp(app)
-            }
-            else if let cat = item as? AppCategory {
-                delegate?.didSelectCategory(cat)
-            }
+        guard let item = category.dataSource()[indexPath.row] as? Displayable else { return }
+
+        if let app = item as? App {
+            delegate?.didSelectApp(app)
+        }
+        else if let cat = item as? AppCategory {
+            delegate?.didSelectCategory(cat)
         }
     }
     
@@ -99,7 +98,7 @@ extension CategoryController: UITableViewDelegate {
 
 /// Table data source
 fileprivate extension AppCategory {
-    fileprivate func dataSource() -> [Any] {
+    func dataSource() -> [Any] {
         var list: [Any] = children ?? []
         
         if let apps = apps {

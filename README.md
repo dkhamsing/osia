@@ -10,10 +10,9 @@ Super basic iOS app to browse [`open-source-ios-apps`](https://github.com/dkhams
 - `open Swift/osia.xcodeproj`
 - <kbd>CMD</kbd> + <kbd>R</kbd>
 
-
-:sunglasses:
-
-You can find the Objective-C version [here](https://github.com/dkhamsing/osia/releases).
+Notes:
+- This project requires Swift 5.
+- You can find the Objective-C version [here](https://github.com/dkhamsing/osia/releases).
 
 ## Contact
 

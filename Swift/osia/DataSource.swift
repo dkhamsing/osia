@@ -15,42 +15,42 @@ final class DataSource {
     /// - parameters:
     ///   - url: Endpoint URL.
     ///   - completion: Completion block.
-    static func create(url: String, completion: @escaping (_: AppCategory) -> Void ) {
+    static func create(url: String, completion: @escaping (Result<AppCategory, JsonError>) -> Void ) {
         guard let endpoint = URL(string: url) else {
             print("Error: creating endpoint")
             return
         }
         
         URLSession.shared.dataTask(with: endpoint) { (data, response, error) in
-            do {
-                guard let data = data else {
-                    throw JsonError.noData
-                }
-                
-                let decoder = JSONDecoder()
-                guard let content = try? decoder.decode(Content.self, from: data) else {
-                    throw JsonError.conversionFailed
-                }
-                
-                if let root = parse(content: content) {
-                    completion(root)
-                }
-            } catch let error as JsonError {
-                print(error.rawValue)
-            } catch let error as NSError {
-                print(error.debugDescription)
+            if let _ = error {
+                completion(.failure(.conversionFailed))
+                return
             }
-            }.resume()
+
+            guard let data = data else {
+                completion(.failure(.noData))
+                return
+            }
+
+            if let content = try? JSONDecoder().decode(Content.self, from: data) {
+                if let root = parse(content: content) {
+                    completion(.success(root))
+                }
+            }
+            else {
+                completion(.failure(.conversionFailed))
+            }
+        }.resume()
     }
     
 }
 
+enum JsonError: String, Error {
+       case noData = "Error: no data"
+       case conversionFailed = "Error: conversion from JSON failed"
+   }
+
 private extension DataSource {
-    enum JsonError: String, Error {
-        case noData = "Error: no data"
-        case conversionFailed = "Error: conversion from JSON failed"
-    }
-    
     /// Parse JSON into app model.
     ///
     /// - parameter json: JSON retrieved from endpoint.
@@ -63,7 +63,7 @@ private extension DataSource {
     
     static func generateMapping(apps: [App]) -> [String: [App]] {
         var items = [String: [App]]()
-        for app in apps {
+        apps.forEach { app in
             if !app.isArchive() {
                 if let categoryIDs = app.categoryIds {
                     for id in categoryIDs {
@@ -111,7 +111,7 @@ private extension DataSource {
 
 private extension AppCategory {
     static func insert(child: AppCategory, list: [AppCategory]) -> [AppCategory] {
-        if let index = list.index(where: { $0.id == child.parent }) {
+        if let index = list.firstIndex(where: { $0.id == child.parent }) {
             var categories = list[index]
             if categories.children != nil {
                 categories.children?.append(child)

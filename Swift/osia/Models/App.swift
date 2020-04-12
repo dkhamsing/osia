@@ -25,7 +25,7 @@ struct App: Codable {
     var categoryIds: [String]?
     var description: String?
     var itunes: URL?
-    var screenshots: [URL]?
+    var screenshots: [String]?
     var source: URL?
     var stars: Int?
     var tags: [String]?
@@ -56,7 +56,7 @@ extension App {
     }
 }
 
-extension App: DisplayInterface {
+extension App: Displayable {
     var isCategory: Bool {
         return true
     }

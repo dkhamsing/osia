@@ -8,22 +8,23 @@
 
 import UIKit
 
-protocol SelectURL {
+protocol URLTappable {
     func didSelectURL(_ url: URL?)
 }
 
 final class ScreenshotsController: UIViewController {
     var collectionView: UICollectionView?
-    var delegate: SelectURL?
-    var screenshots: [URL]?
-    var didSelectSourceUrl: (() -> Void)?
+    var delegate: URLTappable?
+    var sourceURL: URL?
+    var screenshots: [String]?
+    let spinner = UIActivityIndicatorView.init(style: .whiteLarge)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.setup()
     }
-    
+
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
@@ -33,19 +34,17 @@ final class ScreenshotsController: UIViewController {
 
 private extension ScreenshotsController {
     @objc func github() {
-        didSelectSourceUrl?()
+        delegate?.didSelectURL(sourceURL)
     }
     
     func setup() {
-        // iOS 11
-        if #available(iOS 11.0, *) {
-            navigationItem.largeTitleDisplayMode = .never
-        }
-        
+        navigationItem.largeTitleDisplayMode = .never
+
         // Bar button
         let barButton = UIBarButtonItem.init(title: Constants.barButtonTitle, style: .plain, target: self, action: #selector(github))
         self.navigationItem.rightBarButtonItem = barButton
-        
+
+
         // Collection
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -61,6 +60,10 @@ private extension ScreenshotsController {
         self.view.addSubview(collectionView)
         
         self.collectionView = collectionView
+
+        // Spinner
+        spinner.frame = view.bounds
+        self.view.addSubview(spinner)
     }
 }
 
@@ -76,15 +79,30 @@ extension ScreenshotsController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let u = screenshots?[indexPath.row]
-        delegate?.didSelectURL(u)
+        guard let unwrapped = screenshots?[indexPath.row],
+            let actualUrl = URL.init(string: unwrapped) else { return }
+
+        delegate?.didSelectURL(actualUrl)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let url = screenshots?[indexPath.row]
-        
         let c = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellId, for: indexPath) as! ScreenshotCell
-        c.url = url
+
+        if c.imageView.image == nil {
+            spinner.startAnimating()
+        }
+
+        if let unwrapped = screenshots?[indexPath.row],
+            let url = URL.init(string: unwrapped) {
+            DispatchQueue.global(qos: .userInitiated).async {
+                if let data = try? Data.init(contentsOf: url) {
+                    DispatchQueue.main.async {
+                        c.imageView.image = UIImage.init(data:data)
+                        self.spinner.stopAnimating()
+                    }
+                }
+            }
+        }
         
         return c
     }
