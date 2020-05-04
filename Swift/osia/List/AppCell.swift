@@ -51,7 +51,7 @@ private extension App {
     }
 }
 
-private extension App {
+extension App {
     var dateDisplay: String? {
         return dateAdded?.date?.yearDisplay ?? dateAdded
     }
@@ -72,7 +72,7 @@ private extension Array {
     }
 }
 
-private extension Date {
+extension Date {
     var yearDisplay: String? {
         let calendar = Calendar.current
         let dateComponents = calendar.dateComponents([.year], from: self)
