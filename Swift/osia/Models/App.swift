@@ -8,12 +8,12 @@
 
 import Foundation
 
-/// The model that corresponds to the app structure.
 struct App: Codable {
     enum CodingKeys: String, CodingKey {
         case title
         case categoryIds = "category-ids"
-        case description = "description"
+        case dateAdded = "date_added"
+        case description
         case itunes
         case screenshots
         case source
@@ -23,41 +23,22 @@ struct App: Codable {
     
     var title: String?
     var categoryIds: [String]?
+    var dateAdded: String?
     var description: String?
     var itunes: URL?
-    var screenshots: [URL]?
+    var screenshots: [String]?
     var source: URL?
     var stars: Int?
     var tags: [String]?
 }
 
 extension App {
-    private struct Constants {
+    private struct Constant {
         static let archive = "archive"
-        static let swift = "swift"
     }
-    
-    /// Returns a boolean value that indicates whether the app is
-    /// written in Swift or not.
-    func isSwift() -> Bool {
-        return self.tags?.contains(Constants.swift) == true
-    }
-    
-    /// Returns a boolean value that indicates whether the app is
-    /// archived or not.
-    func isArchive() -> Bool {
-        return self.tags?.contains(Constants.archive) == true
-    }
-    
-    /// Returns a boolean value that indicates whether the app is
-    /// uploaded to AppStore or not.
-    func isAppStore() -> Bool {
-        return self.itunes != nil
-    }
-}
 
-extension App: DisplayInterface {
-    var isCategory: Bool {
-        return true
-    }
+    /// Returns a boolean value that indicates whether the app is archived or not.
+    var isArchived: Bool {
+        return self.tags?.contains(Constant.archive) == true
+    }   
 }

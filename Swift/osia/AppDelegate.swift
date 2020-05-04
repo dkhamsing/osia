@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  osia
 //
-//  Created by Daniel on 8/10/17.
+//  Created by Daniel Khamsing on 8/10/17.
 //  Copyright © 2017 Daniel Khamsing. All rights reserved.
 //
 
@@ -14,17 +14,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         let navigationController = UINavigationController()
-        if #available(iOS 11.0, *) {
-            navigationController.navigationBar.prefersLargeTitles = true
-        }
-        let c = Coordinator.init(navigationController: navigationController)
+        navigationController.navigationBar.prefersLargeTitles = true
+
+        let c = Coordinator(navigationController: navigationController)
         c.start()
         
-        window = UIWindow.init(frame: UIScreen.main.bounds)
+        window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         
