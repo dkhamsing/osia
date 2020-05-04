@@ -39,12 +39,14 @@ class CategoryCell: UITableViewCell {
     }
 }
 
-private extension Category {
+extension Category {
     var countDisplay: String? {
         let count = list.count
         return String(count)
     }
+}
 
+private extension Category {
     var image: UIImage? {
         return UIImage(systemName: sfsymbol)
     }

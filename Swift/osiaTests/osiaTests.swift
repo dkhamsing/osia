@@ -100,6 +100,18 @@ class osiaTests: XCTestCase {
         XCTAssertTrue(c.list.count == 3)
     }
 
+    func testCategoryListCountDisplay() throws {
+        // Given
+        var c = Category()
+
+        // When
+        c.categories = [Category()]
+        c.apps = [App(), App()]
+
+        // Then
+        XCTAssertTrue(c.countDisplay == "3")
+    }
+
     func testDateFormat1() throws {
         // Given
         var a = App()
