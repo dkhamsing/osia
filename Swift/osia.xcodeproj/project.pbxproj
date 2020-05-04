@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		35A40FBC20430849005E74E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35A40FBB20430849005E74E2 /* Assets.xcassets */; };
 		35D07AB72038F24600C39A99 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D07AB62038F24600C39A99 /* App.swift */; };
+		6549A040246085E400114A07 /* osiaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6549A03F246085E400114A07 /* osiaTests.swift */; };
 		655946301F3D6F0D00EB6B64 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6559462F1F3D6F0D00EB6B64 /* AppDelegate.swift */; };
 		6559463A1F3D6F0D00EB6B64 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 655946381F3D6F0D00EB6B64 /* LaunchScreen.storyboard */; };
 		6591FDD2245E170600F8EEF8 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6591FDD1245E170600F8EEF8 /* CategoryCell.swift */; };
@@ -23,9 +24,22 @@
 		D6B20A3E1F5EFC7800CE1012 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B20A3D1F5EFC7800CE1012 /* Coordinator.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		6549A042246085E400114A07 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 655946241F3D6F0D00EB6B64 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6559462B1F3D6F0D00EB6B64;
+			remoteInfo = osia;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		35A40FBB20430849005E74E2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		35D07AB62038F24600C39A99 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		6549A03D246085E400114A07 /* osiaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = osiaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6549A03F246085E400114A07 /* osiaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = osiaTests.swift; sourceTree = "<group>"; };
+		6549A041246085E400114A07 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6559462C1F3D6F0D00EB6B64 /* osia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = osia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6559462F1F3D6F0D00EB6B64 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		655946391F3D6F0D00EB6B64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -43,6 +57,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6549A03A246085E400114A07 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		655946291F3D6F0D00EB6B64 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -72,10 +93,20 @@
 			name = "Support Files";
 			sourceTree = "<group>";
 		};
+		6549A03E246085E400114A07 /* osiaTests */ = {
+			isa = PBXGroup;
+			children = (
+				6549A03F246085E400114A07 /* osiaTests.swift */,
+				6549A041246085E400114A07 /* Info.plist */,
+			);
+			path = osiaTests;
+			sourceTree = "<group>";
+		};
 		655946231F3D6F0D00EB6B64 = {
 			isa = PBXGroup;
 			children = (
 				6559462E1F3D6F0D00EB6B64 /* osia */,
+				6549A03E246085E400114A07 /* osiaTests */,
 				6559462D1F3D6F0D00EB6B64 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -84,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				6559462C1F3D6F0D00EB6B64 /* osia.app */,
+				6549A03D246085E400114A07 /* osiaTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -118,6 +150,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6549A03C246085E400114A07 /* osiaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6549A046246085E400114A07 /* Build configuration list for PBXNativeTarget "osiaTests" */;
+			buildPhases = (
+				6549A039246085E400114A07 /* Sources */,
+				6549A03A246085E400114A07 /* Frameworks */,
+				6549A03B246085E400114A07 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6549A043246085E400114A07 /* PBXTargetDependency */,
+			);
+			name = osiaTests;
+			productName = osiaTests;
+			productReference = 6549A03D246085E400114A07 /* osiaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		6559462B1F3D6F0D00EB6B64 /* osia */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6559463E1F3D6F0D00EB6B64 /* Build configuration list for PBXNativeTarget "osia" */;
@@ -141,10 +191,15 @@
 		655946241F3D6F0D00EB6B64 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
+				LastSwiftUpdateCheck = 1140;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Daniel Khamsing";
 				TargetAttributes = {
+					6549A03C246085E400114A07 = {
+						CreatedOnToolsVersion = 11.4;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 6559462B1F3D6F0D00EB6B64;
+					};
 					6559462B1F3D6F0D00EB6B64 = {
 						CreatedOnToolsVersion = 8.3.2;
 						ProvisioningStyle = Automatic;
@@ -165,11 +220,19 @@
 			projectRoot = "";
 			targets = (
 				6559462B1F3D6F0D00EB6B64 /* osia */,
+				6549A03C246085E400114A07 /* osiaTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6549A03B246085E400114A07 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6559462A1F3D6F0D00EB6B64 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -182,6 +245,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6549A039246085E400114A07 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6549A040246085E400114A07 /* osiaTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		655946281F3D6F0D00EB6B64 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -203,6 +274,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		6549A043246085E400114A07 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6559462B1F3D6F0D00EB6B64 /* osia */;
+			targetProxy = 6549A042246085E400114A07 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		655946381F3D6F0D00EB6B64 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -215,6 +294,65 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		6549A044246085E400114A07 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = osiaTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = dk.osiaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/osia.app/osia";
+			};
+			name = Debug;
+		};
+		6549A045246085E400114A07 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = osiaTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = dk.osiaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/osia.app/osia";
+			};
+			name = Release;
+		};
 		6559463C1F3D6F0D00EB6B64 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -339,6 +477,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6549A046246085E400114A07 /* Build configuration list for PBXNativeTarget "osiaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6549A044246085E400114A07 /* Debug */,
+				6549A045246085E400114A07 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		655946271F3D6F0D00EB6B64 /* Build configuration list for PBXProject "osia" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
