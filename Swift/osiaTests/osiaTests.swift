@@ -99,4 +99,48 @@ class osiaTests: XCTestCase {
         // Then
         XCTAssertTrue(c.list.count == 3)
     }
+
+    func testDateFormat1() throws {
+        // Given
+        var a = App()
+
+        // When
+        a.dateAdded = "Mar 21, 2019"
+
+        // Then
+        XCTAssertTrue(a.dateDisplay == "2019")
+    }
+
+    func testDateFormat2() throws {
+        // Given
+        var a = App()
+
+        // When
+        a.dateAdded = "Fri Nov 6 06:19:26 2015 -0800"
+
+        // Then
+        XCTAssertTrue(a.dateDisplay == "2015")
+    }
+
+    func testDateFormat3() throws {
+        // Given
+        var a = App()
+
+        // When
+        a.dateAdded = "May 4 2020"
+
+        // Then
+        XCTAssertTrue(a.dateDisplay == "2020")
+    }
+
+    func testDateFormat4() throws {
+        // Given
+        var a = App()
+
+        // When
+        a.dateAdded = "Tue, 17 Mar 2015 14:51:44 -0400"
+
+        // Then
+        XCTAssertTrue(a.dateDisplay == "2015")
+    }
 }
