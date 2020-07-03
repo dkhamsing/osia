@@ -2,128 +2,101 @@
 //  DataSource.swift
 //  osia
 //
-//  Created by Daniel on 2/3/18.
+//  Created by Daniel Khamsing on 2/3/18.
 //  Copyright © 2018 Daniel Khamsing. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-final class DataSource {
-    
-    /// Create data source from endpoint.
-    ///
-    /// - parameters:
-    ///   - url: Endpoint URL.
-    ///   - completion: Completion block.
-    static func create(url: String, completion: @escaping (_: AppCategory) -> Void ) {
-        guard let endpoint = URL(string: url) else {
-            print("Error: creating endpoint")
+struct DataSource {
+    /// Create data source from URL.
+    /// - Parameters:
+    ///   - url: URL.
+    ///   - completion: Completion handler.
+    static func Create(url: String, completion: @escaping (Result<Category, JsonError>) -> Void ) {
+        guard let url = URL(string: url) else {
+            print("Error \(JsonError.url.rawValue)")
+            completion(.failure(.url))
             return
         }
         
-        URLSession.shared.dataTask(with: endpoint) { (data, response, error) in
-            do {
-                guard let data = data else {
-                    throw JsonError.noData
-                }
-                
-                let decoder = JSONDecoder()
-                guard let content = try? decoder.decode(Content.self, from: data) else {
-                    throw JsonError.conversionFailed
-                }
-                
-                if let root = parse(content: content) {
-                    completion(root)
-                }
-            } catch let error as JsonError {
-                print(error.rawValue)
-            } catch let error as NSError {
-                print(error.debugDescription)
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard
+                let data = data,
+                let response = try? JSONDecoder().decode(Response.self, from: data),
+                let root = CreateRoot(response: response) else {
+                    print("Error \(JsonError.datasource.rawValue)")
+                    completion(.failure(.datasource))
+                    return
             }
-            }.resume()
+
+            completion(.success(root))
+        }.resume()
     }
-    
+}
+
+enum JsonError: String, Error {
+    case datasource = "Error creating data source"
+    case url = "Error with URL"
 }
 
 private extension DataSource {
-    enum JsonError: String, Error {
-        case noData = "Error: no data"
-        case conversionFailed = "Error: conversion from JSON failed"
-    }
-    
-    /// Parse JSON into app model.
-    ///
-    /// - parameter json: JSON retrieved from endpoint.
-    /// - returns: `AppCategory` model object.
-    static func parse(content: Content) -> AppCategory? {
-        let apps = generateMapping(apps: content.apps)
-        let root = generateRoot(apps: apps, categories: content.categories)
-        return root
-    }
-    
-    static func generateMapping(apps: [App]) -> [String: [App]] {
-        var items = [String: [App]]()
-        for app in apps {
-            if !app.isArchive() {
-                if let categoryIDs = app.categoryIds {
-                    for id in categoryIDs {
-                        if items[id] == nil {
-                            items[id] = [app]
-                        }
-                        else {
-                            var list = items[id] as [App]?
-                            list?.append(app)
-                            items[id] = list
-                        }
-                    }
+    /// Parse JSON response into app model.
+    /// - Parameter response: JSON response.
+    /// - Returns: Root `Category` item.
+    static func CreateRoot(response: Response) -> Category? {
+        let apps = response.apps.filter { $0.isArchived == false }
+
+        var parentCategories: [Category] = []
+        var childrenCategories: [Category] = []
+        var categoryNames: Set<String> = Set()
+        for var c in response.categories {
+            c.apps = apps
+                .filter { $0.categoryIds?.contains(c.id ?? "") ?? false }
+                .sorted { $0.title?.lowercased() ?? "" < $1.title?.lowercased() ?? "" }
+
+            if c.isParent {
+                parentCategories.append(c)
+                categoryNames.insert(c.id ?? "")
+            }
+            else {
+                if c.apps?.count ?? 0 > 0 {
+                childrenCategories.append(c)
                 }
             }
         }
-        return items
-    }
-    
-    static func generateRoot(apps: [String: [App]], categories: [AppCategory]) -> AppCategory {
-        var children = [AppCategory]()
-        var generatedCategories = [AppCategory]()
-        for var category in categories {
-            if let id = category.id {
-                category.apps = apps[id] ?? []
-                category.apps = category.apps?.sorted { $0.title?.lowercased() ?? "" < $1.title?.lowercased() ?? "" }
-            }
-            
-            if category.isParent() {
-                generatedCategories.append(category)
+
+        var categories: [Category] = []
+        for c in parentCategories {
+            if categoryNames.contains(c.id ?? "") { // has sub categories
+                var category = c
+                category.categories = childrenCategories.filter { $0.parent == c.id }
+                categories.append(category)
             }
             else {
-                children.append(category)
+                categories.append(c)
             }
         }
-    
-        for child in children {
-            generatedCategories = AppCategory.insert(child: child, list: generatedCategories)
-        }
-        
-        var root = AppCategory()
-        root.children = generatedCategories.sorted { $0.title ?? "" < $1.title ?? "" }
+
+        let root = Category(categories: categories)
         return root
     }
 }
 
-private extension AppCategory {
-    static func insert(child: AppCategory, list: [AppCategory]) -> [AppCategory] {
-        if let index = list.index(where: { $0.id == child.parent }) {
-            var categories = list[index]
-            if categories.children != nil {
-                categories.children?.append(child)
-            }
-            else {
-                categories.children = [child]
-            }
-            
-            var updated = list
-            updated[index] = categories
-            return updated
-        }
-        return list
+private extension App {
+    struct Constant {
+        static let archive = "archive"
+    }
+
+    /// Returns a boolean value that indicates whether the app is archived or not.
+    var isArchived: Bool {
+        return self.tags?.contains(Constant.archive) == true
+    }
+}
+
+private extension Category {    
+    /// Returns a boolean value that indicates whether the category has a parent.
+    var isParent: Bool {
+        return parent == nil
     }
 }

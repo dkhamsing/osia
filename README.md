@@ -2,7 +2,7 @@
 
 Super basic iOS app to browse [`open-source-ios-apps`](https://github.com/dkhamsing/open-source-ios-apps) :octocat:
 
-![](Assets/0.2.png)
+![](Assets/0.7.png)
 
 ## Getting Started
 
@@ -10,10 +10,9 @@ Super basic iOS app to browse [`open-source-ios-apps`](https://github.com/dkhams
 - `open Swift/osia.xcodeproj`
 - <kbd>CMD</kbd> + <kbd>R</kbd>
 
-
-:sunglasses:
-
-You can find the Objective-C version [here](https://github.com/dkhamsing/osia/releases).
+Notes:
+- This project requires iOS 13.
+- You can find the Objective-C version [here](https://github.com/dkhamsing/osia/releases).
 
 ## Contact
 

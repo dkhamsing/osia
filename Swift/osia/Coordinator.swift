@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SafariServices
 
 final class Coordinator {
     let navigationController: UINavigationController
@@ -17,56 +16,61 @@ final class Coordinator {
     }
     
     func start() {
-        let v = CategoryController()
+        let v = ListController()
         v.delegate = self
-        v.title = Constants.title
+        v.title = Constant.title
         navigationController.pushViewController(v, animated: false)
         
-        DataSource.create(url: Constants.url) { c in
-            v.category = c
+        DataSource.Create(url: Constant.url) { result in
+            guard case .success(let root) = result else { return }
+
+            v.category = root
             DispatchQueue.main.async {
-                v.tableView.reloadData()
+                v.reload()
             }
         }
     }
 }
 
-private struct Constants {
+private struct Constant {
     static let title = "OSIA"
     static let url = "https://raw.githubusercontent.com/dkhamsing/open-source-ios-apps/master/contents.json"
 }
 
-extension Coordinator: SelectDelegate {
-    func didSelectApp(_ app: App) {        
-        if app.screenshots?.count ?? 0 > 0 {
-            let s = ScreenshotsController()
-            s.delegate = self            
-            s.didSelectSourceUrl = { () -> Void in
-                self.didSelectURL(app.source)
-            }
-            s.screenshots = app.screenshots
-            s.title = app.title
-            navigationController.pushViewController(s, animated: true)
+extension Coordinator: Selectable {
+    func didSelect(_ app: App) {
+        guard app.hasScreenshots else {
+            didSelect(app.source)
+            return
         }
-        else {
-            didSelectURL(app.source)
-        }
+
+        let s = ScreenshotsController()
+        s.delegate = self
+        s.title = app.title
+        s.sourceURL = app.source
+        s.screenshots = app.screenshots
+
+        navigationController.pushViewController(s, animated: true)
     }
     
-    func didSelectCategory(_ category: AppCategory) {
-        let v = CategoryController()
-        v.category = category
+    func didSelect(_ category: Category) {
+        let v = ListController()
         v.delegate = self
         v.title = category.title
+        v.category = category
+
         navigationController.pushViewController(v, animated: true)
+    }
+
+    func didSelect(_ url: URL?) {
+        guard let url = url else { return }
+
+        UIApplication.shared.open(url)
     }
 }
 
-extension Coordinator: SelectURL {
-    func didSelectURL(_ url: URL?) {
-        if let u = url {
-            let s = SFSafariViewController.init(url: u)
-            navigationController.present(s, animated: true, completion: nil)
-        }
+private extension App {
+    var hasScreenshots: Bool {
+        return screenshots?.count ?? 0 > 0
     }
 }
