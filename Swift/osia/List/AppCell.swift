@@ -53,7 +53,7 @@ private extension App {
 
 private extension App {
     var dateDisplay: String? {
-        return dateAdded?.date?.yearDisplay ?? dateAdded
+        return dateUpdated?.date?.yearDisplay ?? dateUpdated
     }
 
     var tagDisplay: String? {
@@ -103,6 +103,11 @@ extension String {
         }
 
         dateFormatter.dateFormat = "E, d MMM yyyy HH:mm:ss Z"
+        if let date = dateFormatter.date(from: self) {
+            return date
+        }
+
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
         if let date = dateFormatter.date(from: self) {
             return date
         }

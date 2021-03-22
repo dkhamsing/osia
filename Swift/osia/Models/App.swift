@@ -12,7 +12,7 @@ struct App: Codable {
     private enum CodingKeys: String, CodingKey {
         case title
         case categoryIds = "category-ids"
-        case dateAdded = "date_added"
+        case dateUpdated = "updated"
         case description
         case screenshots
         case source
@@ -21,7 +21,7 @@ struct App: Codable {
     
     var title: String?
     var categoryIds: [String]?
-    var dateAdded: String?
+    var dateUpdated: String?
     var description: String?
     var screenshots: [String]?
     var source: URL?
