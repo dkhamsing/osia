@@ -4,7 +4,7 @@ Super basic iOS app to browse [`open-source-ios-apps`](https://github.com/dkhams
 
 ![](Assets/0.7.png)
 
-![](https://github.com/dkhamsing/osia/actions/workflows/xcodebuild-ios14.yml/badge.svg) ![](https://github.com/dkhamsing/osia/actions/workflows/xcodebuild-ios15.yml/badge.svg) ![](https://github.com/dkhamsing/osia/actions/workflows/xcodebuild-ios15.yml/badge.svg)
+![](https://github.com/dkhamsing/osia/actions/workflows/xcodebuild-ios14.yml/badge.svg) ![](https://github.com/dkhamsing/osia/actions/workflows/xcodebuild-ios15.yml/badge.svg) ![](https://github.com/dkhamsing/osia/actions/workflows/xcodebuild-ios16.yml/badge.svg)
 
 ## Getting Started
 
