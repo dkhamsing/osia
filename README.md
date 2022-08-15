@@ -4,15 +4,16 @@ Super basic iOS app to browse [`open-source-ios-apps`](https://github.com/dkhams
 
 ![](Assets/0.7.png)
 
+![](https://github.com/dkhamsing/osia/actions/workflows/xcodebuild-ios14.yml/badge.svg) ![](https://github.com/dkhamsing/osia/actions/workflows/xcodebuild-ios15.yml/badge.svg) ![](https://github.com/dkhamsing/osia/actions/workflows/xcodebuild-ios16.yml/badge.svg)
+
 ## Getting Started
 
 - `git clone https://github.com/dkhamsing/osia.git`
 - `open Swift/osia.xcodeproj`
 - <kbd>CMD</kbd> + <kbd>R</kbd>
 
-Notes:
-- This project requires iOS 13.
-- You can find the Objective-C version [here](https://github.com/dkhamsing/osia/releases).
+> **Note**
+> You can find the Objective-C version [here](https://github.com/dkhamsing/osia/releases).
 
 ## Contact
 
